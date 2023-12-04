@@ -18,7 +18,7 @@ body { margin: 0; padding: 0; }
     const map = new mapboxgl.Map({
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: 'mapbox://styles/mapbox/light-v11',
+        style: 'mapbox://styles/mapbox/dark-v11',
         center: [-73.74380, 40.83090],
         zoom: 9.37,
         pitch: 40,
@@ -28,7 +28,7 @@ body { margin: 0; padding: 0; }
 
     map.on('load', () => {
         map.addSource('shelters', {
-            'type': 'geojson',
+            'type': 'vector',
             /*
              * Each feature in this GeoJSON file contains values for
              * `properties.height`, `properties.base_height`,
@@ -36,7 +36,7 @@ body { margin: 0; padding: 0; }
              * In `addLayer` you will use expressions to set the new
              * layer's paint properties based on these values.
              */
-            'data': 'https://raw.github.com/fmvaldezg/shelters_nyc/main/data/NYCShelterByCommDist.geojson'
+            'url': 'mapbox://styles/fmvaldezg84/clprdduyw00q201pgbqr1gg7q'
         });
         //map.addLayer({
             //'id': 'shelter-extrusion',
@@ -59,13 +59,30 @@ body { margin: 0; padding: 0; }
 
         map.addLayer({
             'id': 'shelter',
-            'type': 'fill',
+            'type': 'fill-extrusion',
             'source': 'shelters',
             'layout':{},
             'paint': {
-                'fill-color': blue,
-                'fill-opacity':1,
-
+                "fill-extrusion-height": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "TotShelters"],
+                    0,
+                    0,
+                    1544,
+                    1544
+                ],
+                "fill-extrusion-base": 1,
+                "fill-extrusion-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "TotShelters"],
+                    0,
+                    "hsl(0, 91%, 94%)",
+                    1544,
+                    "hsl(0, 92%, 30%)"
+                ],
+                "fill-extrusion-opacity": 0.8
             }
         });
 
