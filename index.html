@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Extrude polygons for 3D indoor mapping</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.0.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.0.0/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZm12YWxkZXpnODQiLCJhIjoiY2w5eWJzMzkwMDNiaDNvbGltamV1ajdvNiJ9.esyugI1HyBVPAQcRN551xw';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [-73.74380, 40.83090],
+        zoom: 9.37,
+        pitch: 40,
+        bearing: 20,
+        antialias: true
+    });
+
+    map.on('load', () => {
+        map.addSource('shelters', {
+            'type': 'geojson',
+            /*
+             * Each feature in this GeoJSON file contains values for
+             * `properties.height`, `properties.base_height`,
+             * and `properties.color`.
+             * In `addLayer` you will use expressions to set the new
+             * layer's paint properties based on these values.
+             */
+            'data': 'https://raw.github.com/fmvaldezg/shelters_nyc/main/data/NYCShelterByCommDist.geojson'
+        });
+        //map.addLayer({
+            //'id': 'shelter-extrusion',
+            //'type': 'fill-extrusion',
+            //'source': 'shelters',
+            //'paint': {
+                // Get the `fill-extrusion-color` from the source `color` property.
+                //'fill-extrusion-color': white,
+
+                // Get `fill-extrusion-height` from the source `height` property.
+                //'fill-extrusion-height': ['get', 'TotShelters'],
+
+                // Get `fill-extrusion-base` from the source `base_height` property.
+                //'fill-extrusion-base': 0,
+
+                // Make extrusions slightly opaque to see through indoor walls.
+                //'fill-extrusion-opacity': 0.5
+            //}
+        //});
+
+        map.addLayer({
+            'id': 'shelter',
+            'type': 'fill',
+            'source': 'shelters',
+            'paint': {
+                'fill-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'TotShelters'],
+                    0,
+                    '#F2F12D',
+                    10,
+                    '#EED322',
+                    50,
+                    '#E6B71E',
+                    100,
+                    '#DA9C20',
+                    150,
+                    '#CA8323',
+                    200,
+                    '#B86B25',
+                    250,
+                    '#A25626',
+                    300,
+                    '#8B4225',
+                    500,
+                    '#723122'
+                ]
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>
