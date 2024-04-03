@@ -85,10 +85,10 @@ p {
     const map = new mapboxgl.Map({
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: 'mapbox://styles/fmvaldezg84/clprdduyw00q201pgbqr1gg7q',
-        //center: [-73.74380, 40.83090],
-        //zoom: 9.37,
-        //pitch: 40,
+        style: 'mapbox://styles/fmvaldezg84/cluk6nq47005v01qo48j3ab3y',
+        center: [-73.74380, 40.83090],
+        zoom: 9.37,
+        pitch: 40,
         //bearing: 20,
         //antialias: true
     });
@@ -127,10 +127,10 @@ p {
 
         map.on('mousemove', (event) => {
         const shelters = map.queryRenderedFeatures(event.point, {
-            layers: ['shelters']
+            layers: ['shelterbycommdist-4du506']
         });
         document.getElementById('pd').innerHTML = shelters.length
-            ? `<h3>${shelters[0].properties.comm_dist}</h3><p><strong><em>${shelters[0].properties.TotShelters}</strong> shelters</em></p>`
+            ? `<h3>${shelters[0].properties.Total_Shelters}</strong> shelters</em></p>`
             : `<p>Hover over a Community District!</p>`;
         });
 
